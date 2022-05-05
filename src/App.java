@@ -29,5 +29,8 @@ public class App {
 		st.preOrder();
 		System.out.print("\nPÓS-ORDEM - ");
 		st.postOrder();
+		System.out.print("\nTAMANHO - " + st.size());
+		System.out.print("\nALTURA - " + st.height());
+		System.out.print("\nTAMANHO_DO_CAMINHO_INTERNO - " + st.getInternalPathLenght());
 	}
 }
