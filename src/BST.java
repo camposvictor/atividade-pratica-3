@@ -1,9 +1,11 @@
+package pedroHenriqueSousadeOliveira;
+
 import java.util.NoSuchElementException;
 
 public class BST<Key extends Comparable<Key>, Value> {
 	private Node root; // root of BST
-
-	private class Node {
+	public int internalPathLenght;
+	public class Node {
 		private Key key; // sorted by key
 		private Value val; // associated data
 		private Node left, right; // left and right subtrees
@@ -362,7 +364,6 @@ public class BST<Key extends Comparable<Key>, Value> {
 			return -1;
 		return 1 + Math.max(height(x.left), height(x.right));
 	}
-
 	/**
 	 * Returns the keys in the BST in level order (for debugging).
 	 *
@@ -453,8 +454,13 @@ public class BST<Key extends Comparable<Key>, Value> {
 	}
 
 	private void preOrder(Node node) {
-		if (node == null)
+		
+		if (node == null){
 			return;
+	    }
+		if ((node.right == null) && (node.left==null)) {
+			internalPathLenght+=findDepth(root, node.key);
+		}
 
 		System.out.print(node.key + " ");
 		preOrder(node.left);
@@ -472,4 +478,35 @@ public class BST<Key extends Comparable<Key>, Value> {
 	public void postOrder() {
 		postOrder(root);
 	}
+	
+	public int getInternalPathLenght() {
+		return internalPathLenght;
+	}
+	
+	int findDepth(Node root, Key x)
+	{
+	    // Base case
+	    if (root == null)
+	        return -1;
+	 
+	    // Initialize distance as -1
+	    int dist = -1;
+	 
+	    // Check if x is current node=
+	    if ((root.key == x)
+	 
+	        // Otherwise, check if x is
+	        // present in the left subtree
+	        || (dist = findDepth(root.left, x)) >= 0
+	 
+	        // Otherwise, check if x is
+	        // present in the right subtree
+	        || (dist = findDepth(root.right, x)) >= 0)
+	 
+	        // Return depth of the node
+	        return dist + 1;
+	 
+	    return dist;
+	}
+	
 }
