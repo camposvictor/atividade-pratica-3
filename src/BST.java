@@ -2,7 +2,8 @@ import java.util.NoSuchElementException;
 
 public class BST<Key extends Comparable<Key>, Value> {
 	private Node root; // root of BST
-	public int internalPathLenght;
+	private int internalPathLenght;
+
 	public class Node {
 		private Key key; // sorted by key
 		private Value val; // associated data
@@ -217,7 +218,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 		else
 			return max(x.right);
 	}
-	
+
 	/**
 	 * Return the key in the symbol table of a given {@code rank}. This key has the
 	 * property that there are {@code rank} keys in the symbol table that are
@@ -362,6 +363,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 			return -1;
 		return 1 + Math.max(height(x.left), height(x.right));
 	}
+
 	/**
 	 * Returns the keys in the BST in level order (for debugging).
 	 *
@@ -433,78 +435,79 @@ public class BST<Key extends Comparable<Key>, Value> {
 		return true;
 	}
 
-	private void postOrder(Node node) {
+	private String postOrder(Node node, String result) {
 		if (node == null)
-			return;
-
-		postOrder(node.left);
-		postOrder(node.right);
-		System.out.print(node.key + " ");
+			return result;
+		result = postOrder(node.left, result);
+		result = postOrder(node.right, result);
+		result += node.key + "  ";
+		return result;
 	}
 
-	private void inOrder(Node node) {
+	private String inOrder(Node node, String result) {
 		if (node == null)
-			return;
+			return result;
 
-		inOrder(node.left);
-		System.out.print(node.key + " ");
-		inOrder(node.right);
+		result = inOrder(node.left, result);
+		result += node.key + " ";
+		result = inOrder(node.right, result);
+		return result;
 	}
 
-	private void preOrder(Node node) {
-		
-		if (node == null){
-			return;
-	    }
-		if ((node.right == null) && (node.left==null)) {
-			internalPathLenght+=findDepth(root, node.key);
+	private String preOrder(Node node, String result) {
+
+		if (node == null)
+			return result;
+
+		if ((node.right == null) && (node.left == null)) {
+			internalPathLenght += findDepth(root, node.key);
 		}
-
-		System.out.print(node.key + " ");
-		preOrder(node.left);
-		preOrder(node.right);
+		result += (node.key + " ");
+		result = preOrder(node.left, result);
+		result = preOrder(node.right, result);
+		return result;
 	}
 
-	public void inOrder() {
-		inOrder(root);
+	public String inOrder() {
+		return inOrder(root, "");
 	}
 
-	public void preOrder() {
-		preOrder(root);
+	public String preOrder() {
+		return preOrder(root, "");
 	}
 
-	public void postOrder() {
-		postOrder(root);
+	public String postOrder() {
+		return postOrder(root, "");
 	}
-	
+
 	public int getInternalPathLenght() {
+		internalPathLenght = 0;
+		preOrder();
 		return internalPathLenght;
 	}
-	
-	int findDepth(Node root, Key x)
-	{
-	    // Base case
-	    if (root == null)
-	        return -1;
-	 
-	    // Initialize distance as -1
-	    int dist = -1;
-	 
-	    // Check if x is current node=
-	    if ((root.key == x)
-	 
-	        // Otherwise, check if x is
-	        // present in the left subtree
-	        || (dist = findDepth(root.left, x)) >= 0
-	 
-	        // Otherwise, check if x is
-	        // present in the right subtree
-	        || (dist = findDepth(root.right, x)) >= 0)
-	 
-	        // Return depth of the node
-	        return dist + 1;
-	 
-	    return dist;
+
+	int findDepth(Node root, Key x) {
+		// Base case
+		if (root == null)
+			return -1;
+
+		// Initialize distance as -1
+		int dist = -1;
+
+		// Check if x is current node=
+		if ((root.key == x)
+
+				// Otherwise, check if x is
+				// present in the left subtree
+				|| (dist = findDepth(root.left, x)) >= 0
+
+				// Otherwise, check if x is
+				// present in the right subtree
+				|| (dist = findDepth(root.right, x)) >= 0)
+
+			// Return depth of the node
+			return dist + 1;
+
+		return dist;
 	}
-	
 }
